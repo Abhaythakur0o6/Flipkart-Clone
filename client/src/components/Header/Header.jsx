@@ -1,7 +1,7 @@
 import "./Css/Header.css"
-import { useDataContextProvider } from '../../context/dataProvider';
+import { useDataContextProvider } from '../../context/DataProvider';
 import { Link } from "react-router-dom"
-import Search from './search';
+import Search from './Search';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOutUser } from "../../redux/features/UserSlice";
 import { useState } from "react";

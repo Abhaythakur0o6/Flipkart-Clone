@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import "./LoginSignup.css"
-import { useDataContextProvider } from '../../context/dataProvider';
+import { useDataContextProvider } from '../../context/DataProvider';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, signUpUser, VerifyOtp } from '../../redux/features/UserSlice';
 import { SendOtp } from '../../service/Api';
