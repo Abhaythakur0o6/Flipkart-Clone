@@ -6,7 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductDetail } from '../redux/features/ProductSlice';
 import { SubmitReview, SubmitReviewChanges } from '../service/Api';
-import { useDataContextProvider } from '../context/dataProvider';
+import { useDataContextProvider } from '../context/DataProvider';
 
 const ProductReview = () => {
 

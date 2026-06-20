@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import Footer from '../components/Footer/Footer'
 import { fetchProductDetail } from '../redux/features/ProductSlice'
 import { addToCart } from '../redux/features/CartSlice'
-import { useDataContextProvider } from '../context/dataProvider'
+import { useDataContextProvider } from '../context/DataProvider'
 import { DeleteReview, placeOrderApi, toPaymentGateway } from '../service/Api'
 import { useState } from 'react'
 

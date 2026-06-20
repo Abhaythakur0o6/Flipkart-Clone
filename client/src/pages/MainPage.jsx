@@ -5,7 +5,7 @@ import Carousel from '../components/MainPage/Carousel/Carousel'
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import Slide from "../components/MainPage/Slide/Slide"
-import MidSlide from "../components/MainPage/midSlide/midSlide"
+import MidSlide from "../components/MainPage/MidSlide/MidSlide"
 import MidSection from "../components/MainPage/MidSection/MidSection"
 import TopStories from "../components/MainPage/TopStories/TopStories"
 import Footer from "../components/Footer/Footer"
