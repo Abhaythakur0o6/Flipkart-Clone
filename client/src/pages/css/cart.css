@@ -1,0 +1,370 @@
+.cart-page-wrapper {
+  background-color: #f1f3f6;
+  width: 100%;
+  min-height: 100vh;
+  padding-bottom: 32px;
+}
+
+.product-cart {
+  display: flex;
+  justify-content: center;
+  padding: 32px 0;
+  gap: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* LEFT SIDE */
+.cart-left {
+  width: 66%;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  background: white;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Address Section */
+.delivery-address {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background: white;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.address-label p {
+  font-size: 14px;
+  color: #212121;
+  margin: 0;
+}
+
+.change-btn {
+  border: 1px solid #e0e0e0;
+  background: white;
+  color: #2874f0;
+  font-weight: 500;
+  font-size: 12px;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+
+/* Cart Products */
+.cart-prodcuts {
+  display: flex;
+  flex-direction: column;
+  background: white;
+}
+
+.cart-product {
+  display: flex;
+  padding: 24px;
+  border-top: 1px solid #f0f0f0;
+  position: relative;
+}
+
+.cart-product-image {
+  width: 112px;
+  height: 112px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.cart-product-image img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.cart-product-details {
+  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.product-title {
+  font-size: 16px;
+  color: #212121;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.product-size {
+  font-size: 14px;
+  color: #878787;
+  margin: 8px 0 0 0;
+}
+
+.seller-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.seller-info p {
+  font-size: 12px;
+  color: #878787;
+  margin: 0;
+}
+
+.seller-info img {
+  height: 15px;
+}
+
+.price-of-product {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.original-price {
+  color: #878787;
+  text-decoration: line-through;
+  font-size: 14px;
+}
+
+.discounted-price {
+  font-size: 18px;
+  font-weight: 600;
+  color: #212121;
+}
+
+.discount-percentage {
+  color: #388e3c;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.offers-applied {
+  color: #388e3c;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.delivery-date {
+  font-size: 12px;
+  color: #212121;
+  margin-left: auto;
+  white-space: nowrap;
+  padding-left: 10px;
+}
+
+/* Product Buttons */
+.cart-product-buttons {
+  display: flex;
+  align-items: center;
+  padding: 0 24px 24px 24px;
+  background: white;
+}
+
+.quantity-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quantity-buttons button {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid #c2c2c2;
+  background: white;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #212121;
+}
+
+.quantity-buttons input {
+  width: 46px !important;
+  height: 28px;
+  text-align: center;
+  border: 1px solid #c2c2c2;
+  font-size: 14px;
+  font-weight: 500;
+  color: #212121;
+  outline: none;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  color: #212121;
+  margin-left: 24px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.action-btn:hover {
+  color: #2874f0;
+}
+
+/* Place Order Button */
+.order-placement-button {
+  background: white;
+  padding: 16px 24px;
+  box-shadow: 0 -2px 10px 0 rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: flex-end;
+  position: sticky;
+  bottom: 0;
+  border-top: 1px solid #f0f0f0;
+}
+
+.order-placement-button button {
+  background: #fb641b;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 16px 30px;
+  min-width: 250px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+/* RIGHT SIDE */
+.cart-right {
+  width: 32%;
+  /* slightly less than 33 to account for gap */
+  background: white;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+}
+
+.price-heading {
+  padding: 13px 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.price-heading p {
+  font-size: 16px;
+  color: #878787;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.price-calculations {
+  padding: 0 24px;
+}
+
+.cart-price-calculation {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  font-size: 16px;
+  color: #212121;
+}
+
+.cart-price-calculation p {
+  margin: 0;
+}
+
+.cart-green {
+  color: #388e3c;
+}
+
+.total-amount-calculated {
+  border-top: 1px dashed #e0e0e0;
+  padding: 20px 24px;
+  margin: 0;
+  font-weight: 600;
+  font-size: 18px;
+  border-bottom: 1px dashed #e0e0e0;
+}
+
+.saving-by-customer {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.saving-by-customer p {
+  margin: 0;
+}
+
+.safe-payment {
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.safe-payment p {
+  font-size: 14px;
+  color: #878787;
+  margin: 0;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.icon-shield img {
+  width: 28px;
+}
+
+/* CART RIGHT SIDE  */
+
+.cart-page {
+  background-color: #eff0f1;
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0rem;
+  height: 28rem;
+  align-items: center;
+}
+
+.empty-cart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  background-color: white;
+  width: 95%;
+  padding: 3rem 0rem;
+  height: 95%;
+}
+
+.empty-cart-image img {
+  max-height: 10rem;
+}
+
+.empty-cart-buttons button {
+  background-color: #2874f0;
+  border: none;
+  color: white;
+  padding: 0.4rem 2.5rem;
+}
+
+/* ----------------------RESPONSIVE---------------------- */
+
+@media (max-width: 900px) {
+  .product-cart {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .product-cart .cart-left,
+  .product-cart .cart-right {
+    width: 95%;
+  }
+  .delivery-date{
+    display: none;
+  }
+}

@@ -1,0 +1,144 @@
+.order-container {
+  padding: 1px;
+  background-color: rgba(244, 241, 241, 0.623);
+}
+
+.my-orders {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 10px;
+}
+
+/* ORDER CARD */
+.order-card {
+  display: grid;
+  grid-template-columns: 120px 1fr 220px;
+  gap: 20px;
+  background: #fff;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  align-items: center;
+  cursor: pointer;
+}
+
+/* IMAGE  */
+.order-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.order-image img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+}
+
+/* DETAILS */
+.order-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.order-product-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #212121;
+}
+
+.order-price {
+  font-size: 16px;
+  font-weight: 600;
+  color: #212121;
+}
+
+.order-meta {
+  font-size: 13px;
+  color: #757575;
+}
+
+/* STATUS */
+.order-status {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.status {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status.pending {
+  color: #ff9f00;
+}
+
+.status.placed {
+  color: #2874f0;
+}
+
+.status.delivered {
+  color: #388e3c;
+}
+
+.status.cancelled {
+  color: #d32f2f;
+}
+
+.order-date {
+  font-size: 13px;
+  color: #757575;
+}
+
+.order-details-link {
+  font-size: 13px;
+  color: #2874f0;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.order-details-link:hover {
+  text-decoration: underline;
+}
+
+/* EMPTY STATE  */
+.cart-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.empty-cart {
+  text-align: center;
+}
+
+.empty-cart-image img {
+  width: 120px;
+  margin-bottom: 10px;
+}
+
+.empty-cart-text p {
+  margin: 4px 0;
+  color: #212121;
+}
+
+.empty-cart-buttons button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background: #2874f0;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+/* Responsive */
+
+@media (max-width: 770px) {
+  .order-status{
+    display: none;
+  }
+}

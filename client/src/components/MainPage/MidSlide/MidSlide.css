@@ -1,0 +1,26 @@
+.mid-slide {
+  display: flex;
+  align-items: stretch;
+  background-color: white;
+  margin-bottom: 1rem;
+}
+
+.mid-slide-slides {
+  width: 85%;
+}
+.mid-slide-images img {
+  width: 100%;
+  max-width: 11.5rem;
+  height: 100%;
+}
+
+/* Responsive */
+
+@media (max-width: 800px) {
+  .mid-slide-images {
+    display: none;
+  }
+  .mid-slide-slides {
+    width: 100%;
+  }
+}

@@ -1,0 +1,9 @@
+.carousel {
+  margin-bottom: 1rem;
+  min-height: 5rem;
+}
+
+.carousel img {
+  min-height: 5rem;
+  object-fit: cover;
+}

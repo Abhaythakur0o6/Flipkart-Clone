@@ -1,0 +1,55 @@
+.categories-container {
+  background-color: rgb(240, 238, 238);
+  padding: 0.1rem;
+}
+
+.categories {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+
+.all-category-products {
+  display: flex;
+  flex-direction: column;
+}
+
+.categories-page-box {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  align-self: center;
+  margin-bottom:0.5rem;
+}
+
+.categories-page-box > :nth-child(2) {
+  border: 1px solid black;
+  padding: 0rem 1rem;
+}
+
+.categories-page-box img {
+  height: 1rem;
+  width: 1rem;
+  cursor: pointer;
+}
+
+.categories > :nth-child(1) {
+  width: 12rem;
+  padding: 0.8rem;
+  background-color: white;
+}
+
+.categories > :nth-child(2) {
+  width: 100%;
+  background-color: white;
+}
+
+/* ----------------------Responsive-------------------------- */
+
+@media (max-width: 700px) {
+  .categories > :nth-child(1) {
+    display: none;
+  }
+}

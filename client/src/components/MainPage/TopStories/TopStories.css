@@ -1,0 +1,28 @@
+.top-stories {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.top-stories p {
+  font-size: 0.7rem;
+  color: grey;
+}
+
+.top-stories h6 {
+  color: rgb(101, 101, 101);
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.top-stories .text {
+  margin-top: 0.4rem;
+}
+
+/* ----------------Responsive-------------- */
+
+@media (max-width: 500px) {
+  .top-stories {
+    display: none;
+  }
+}

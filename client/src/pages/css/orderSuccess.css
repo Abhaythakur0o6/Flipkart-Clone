@@ -1,0 +1,90 @@
+.success-wrapper {
+  min-height: 88vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f1f3f6;
+  width: 100%;
+}
+
+.success-card {
+  background: white;
+  width: 90%;
+  max-height: 460px;
+  padding: 40px 30px;
+  text-align: center;
+  align-items: center;
+  display: flex;
+  gap: 0.4rem;
+  flex-direction: column;
+}
+
+.success-icon img {
+  width: 80px;
+  height: 80px;
+  background: #4caf50;
+  color: white;
+  font-size: 40px;
+  font-weight: bold;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  object-fit: cover;
+}
+
+.success-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.success-subtitle {
+  color: #555;
+  font-size: 15px;
+  margin-bottom: 25px;
+}
+
+.delivery-box {
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  margin-bottom: 25px;
+  font-size: 14px;
+}
+
+.success-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.orders-btn {
+  background: #2874f0;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.orders-btn:hover {
+  background: #0b5ed7;
+}
+
+.shop-btn {
+  background: white;
+  border: 1px solid #2874f0;
+  color: #2874f0;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.shop-btn:hover {
+  background: #f1f3ff;
+}

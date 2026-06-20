@@ -1,0 +1,96 @@
+.product-list-container {
+  border: 1px solid black;
+  height: 100%;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  padding-bottom: 0rem !important;
+  gap: 1.5rem;
+  align-items: center;
+  margin: 0rem 1rem;
+}
+
+.product-list-container .heading-section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.products-list {
+  width: 100%;
+  height: 19.5rem;
+}
+
+/* GRID SYSTEM */
+.products-grid {
+  align-items: center;
+  padding: 14px 10px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.products-grid span{
+  height: 2.2rem;
+}
+
+/* Header row */
+.products-grid.header {
+  font-weight: 600;
+  color: #555;
+  background: #f9fafb;
+  height: 3rem;
+}
+
+/* Data rows */
+.products-grid.row {
+  font-size: 15px;
+}
+
+/* Status Buttons */
+.status {
+  border: none;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.status.active {
+  background: #22c55e;
+  color: white;
+}
+
+.status.delete {
+  background: #f87171;
+  color: white;
+}
+
+.page {
+  border: 1px solid #ddd;
+  padding: 6px 14px;
+  border-radius: 6px;
+}
+
+/* Page Input  */
+
+.page-no{
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.page-no img{
+  max-height: 1rem;
+  cursor: pointer;
+}
+
+.page-no input {
+  all: unset;
+  border: 1px solid rgb(113, 112, 112);
+  width: 2rem;
+  text-align: center;
+  padding: 0.2rem 0.1rem;
+  border-radius: 0.5rem;
+}

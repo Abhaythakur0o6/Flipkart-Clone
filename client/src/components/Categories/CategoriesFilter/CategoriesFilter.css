@@ -1,0 +1,30 @@
+.catogeries-filter {
+  padding: 0.3rem 0.5rem;
+  width: 100%;
+}
+
+.filter-heading {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter-heading img {
+  height: 1.2rem;
+  width: 1.2rem;
+  cursor: pointer;
+}
+
+.hidden-filter {
+  display: none;
+}
+
+.arrow-up {
+  transform: rotate(180deg);
+}
+
+.filter-items {
+  display: flex;
+  gap: 0.5rem;
+}

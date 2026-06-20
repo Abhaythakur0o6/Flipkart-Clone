@@ -1,0 +1,172 @@
+.order-details-page {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  background: #f1f3f6;
+  min-height: 100vh;
+}
+
+/* LEFT & RIGHT */
+.order-details-left {
+  flex: 3;
+}
+
+.order-details-right {
+  flex: 1.2;
+  top: 80px;
+  height: fit-content;
+}
+
+/* COMMON BOX */
+.order-box {
+  background: #fff;
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* ORDER HEADER */
+.order-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.order-id {
+  font-size: 12px;
+  color: #878787;
+}
+
+.order-value {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.order-status {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.order-status.placed {
+  background: #e7f8ec;
+  color: #388e3c;
+}
+
+/* ITEMS */
+.order-item {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #f0f0f0;
+  padding: 12px 0;
+  gap: 1rem;
+}
+
+.order-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.item-details {
+  flex: 1;
+  margin-left: 12px;
+}
+
+.item-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.item-qty {
+  font-size: 12px;
+  color: #757575;
+}
+
+.item-price {
+  font-size: 13px;
+}
+
+.item-total {
+  font-weight: 600;
+}
+
+/* ADDRESS */
+.address-name {
+  font-weight: 600;
+}
+
+/* PRICE DETAILS */
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.price-row.total {
+  border-top: 1px dashed #e0e0e0;
+  padding-top: 10px;
+  font-weight: 600;
+}
+
+.green {
+  color: #388e3c;
+}
+
+/* PAYMENT */
+.payment {
+  margin-left: 6px;
+  font-weight: 600;
+}
+
+.payment.completed {
+  color: #388e3c;
+}
+
+.payment.pending {
+  color: #ff9f00;
+}
+
+/* Order Review  */
+
+.item-total {
+  text-align: center;
+}
+
+.item-total p {
+  color: rgb(45, 66, 255);
+  cursor: pointer;
+}
+
+.item-total p:hover {
+  color: rgb(127, 139, 248);
+}
+
+/* ----------------Responsive-------------- */
+
+@media (max-width: 772px) {
+  .order-status {
+    display: block !important;
+  }
+}
+
+@media (max-width: 660px) {
+  .order-details-page {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+}
+
+@media (max-width: 450px) {
+  .order-header > :nth-child(1) .order-value {
+    max-width: 7rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

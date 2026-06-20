@@ -1,0 +1,22 @@
+.products-container{
+    padding: 1rem;
+}
+
+.products{
+    display: flex;
+}
+
+.products .right-section{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 1rem;
+}
+
+.products .right-section > :nth-child(1){
+    width: 100%;
+}
+
+.products .right-section >:nth-child(2){
+    width: 30%;
+}

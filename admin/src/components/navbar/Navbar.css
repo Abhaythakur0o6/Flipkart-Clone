@@ -1,0 +1,24 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  width: 85%;
+  padding: 1rem 1.5rem;
+  height: 4rem;
+  align-items: center;
+}
+
+.navbar-admin {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.navbar-admin .admin-image {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(194, 31, 194);
+  border-radius: 90%;
+  padding: 0.5rem 0.8rem;
+}
