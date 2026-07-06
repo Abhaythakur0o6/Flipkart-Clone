@@ -22,7 +22,7 @@ const createPaymentLink = async (orderId) => {
                 sms: true,
                 email: true
             },
-            callback_url: `http://localhost:5000/payment?orderId=${orderId}`,
+            callback_url: `${process.env.BASE_URL}/payment?orderId=${orderId}`,
             callback_method: "get"
         };
 
