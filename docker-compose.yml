@@ -2,45 +2,73 @@ version: "3.9"
 
 services:
 
-  # ─── Backend ────────────────────────────────────────────────
+# Backend---------------------------->
   backend:
     build:
       context: ./server
-      dockerfile: Dockerfile
+      target: development
+
     container_name: flipkart-backend
+
     ports:
       - "5000:5000"
+
     env_file:
       - ./server/.env
+
     environment:
-      - NODE_ENV=development
-      - ADMIN_URL=http://localhost:5174
+      NODE_ENV: development
+
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+
     restart: unless-stopped
 
-  # ─── Client (Frontend) ──────────────────────────────────────
+
+# Client---------------------------->
   client:
     build:
       context: ./client
-      dockerfile: Dockerfile
+      target: development
+
     container_name: flipkart-client
+
     ports:
       - "5173:5173"
+
     environment:
-      - VITE_API_URL=http://localhost:5000
+      VITE_API_URL: http://localhost:5000
+
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+
     depends_on:
       - backend
+
     restart: unless-stopped
 
-  # ─── Admin ──────────────────────────────────────────────────
+
+# Admin------------------------>
   admin:
     build:
       context: ./admin
-      dockerfile: Dockerfile
+      target: development
+
     container_name: flipkart-admin
+
     ports:
       - "5174:5174"
+
     environment:
-      - VITE_API_URL=http://localhost:5000
+      VITE_API_URL: http://localhost:5000
+
+    volumes:
+      - ./admin:/app
+      - /app/node_modules
+
     depends_on:
       - backend
+
     restart: unless-stopped

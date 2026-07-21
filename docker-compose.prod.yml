@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./server
+      target: production
+
+    container_name: flipkart-backend
+
+    ports:
+      - "5000:5000"
+
+    env_file:
+      - ./server/.env
+
+    environment:
+      NODE_ENV: production
+
+    restart: unless-stopped
+
+  client:
+    build:
+      context: ./client
+      target: production
+
+    container_name: flipkart-client
+
+    ports:
+      - "5173:80"
+
+    depends_on:
+      - backend
+
+    restart: unless-stopped
+
+  admin:
+    build:
+      context: ./admin
+      target: production
+
+    ports:
+      - "5174:80"
+
+    container_name: flipkart-admin
+
+    depends_on:
+      - backend
+
+    restart: unless-stopped

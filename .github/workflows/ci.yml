@@ -1,0 +1,179 @@
+name: CI - Build & Publish Docker Images
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - "v*.*.*"
+
+  pull_request:
+    branches:
+      - main
+      - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  NODE_VERSION: "20"
+  REGISTRY: ghcr.io
+
+  IMAGE_PREFIX: ${{ github.repository_owner }}/${{ github.event.repository.name }}
+
+jobs:
+
+  quality-check:
+
+    name: Quality Check
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Cache npm packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+
+          restore-keys: |
+            ${{ runner.os }}-npm-
+      - name: Install Root Dependencies
+        run: npm ci
+
+      - name: Install Client Dependencies
+        working-directory: ./client
+        run: npm ci --legacy-peer-deps
+
+      - name: Install Admin Dependencies
+        working-directory: ./admin
+        run: npm ci --legacy-peer-deps
+
+      - name: Install Backend Dependencies
+        working-directory: ./server
+        run: npm ci --legacy-peer-deps
+
+      - name: Build Client
+        working-directory: ./client
+        run: npm run build
+
+      - name: Build Admin
+        working-directory: ./admin
+        run: npm run build
+
+      - name: Verify Backend
+        working-directory: ./server
+        run: |
+          node --version
+          npm --version
+
+  docker-build:
+
+    name: Build & Push Docker Images
+
+    runs-on: ubuntu-latest
+
+    needs: quality-check
+
+    if: github.event_name == 'push'
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & Push Client Image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./client
+          file: ./client/Dockerfile
+          target: production
+
+          push: true
+
+          tags: |
+            ghcr.io/${{ env.IMAGE_PREFIX }}-client:latest
+            ghcr.io/${{ env.IMAGE_PREFIX }}-client:${{ github.sha }}
+
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build & Push Admin Image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./admin
+          file: ./admin/Dockerfile
+          target: production
+
+          push: true
+
+          tags: |
+            ghcr.io/${{ env.IMAGE_PREFIX }}-admin:latest
+            ghcr.io/${{ env.IMAGE_PREFIX }}-admin:${{ github.sha }}
+
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Build & Push Backend Image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./server
+          file: ./server/Dockerfile
+          target: production
+
+          push: true
+
+          tags: |
+            ghcr.io/${{ env.IMAGE_PREFIX }}-backend:latest
+            ghcr.io/${{ env.IMAGE_PREFIX }}-backend:${{ github.sha }}
+
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Verify Published Images
+        run: |
+          echo "Client Image:"
+          echo "ghcr.io/${{ env.IMAGE_PREFIX }}-client:${{ github.sha }}"
+
+          echo "Admin Image:"
+          echo "ghcr.io/${{ env.IMAGE_PREFIX }}-admin:${{ github.sha }}"
+
+          echo "Backend Image:"
+          echo "ghcr.io/${{ env.IMAGE_PREFIX }}-backend:${{ github.sha }}"
+
+      - name: Workflow Summary
+        run: |
+          echo "Docker images built successfully." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Registry: ${{ env.REGISTRY }}" >> $GITHUB_STEP_SUMMARY
+          echo "Repository: ${{ env.IMAGE_PREFIX }}" >> $GITHUB_STEP_SUMMARY
+          echo "Commit SHA: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Images Published:" >> $GITHUB_STEP_SUMMARY
+          echo "- Client" >> $GITHUB_STEP_SUMMARY
+          echo "- Admin" >> $GITHUB_STEP_SUMMARY
+          echo "- Backend" >> $GITHUB_STEP_SUMMARY
