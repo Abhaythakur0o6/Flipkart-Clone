@@ -24,8 +24,7 @@ permissions:
 env:
   NODE_VERSION: "20"
   REGISTRY: ghcr.io
-
-  IMAGE_PREFIX: ${{ github.repository_owner }}/${{ github.event.repository.name }}
+  IMAGE_PREFIX: abhaythakur0o6/flipkart-clone
 
 jobs:
 
