@@ -119,6 +119,9 @@ jobs:
             ghcr.io/${{ env.IMAGE_PREFIX }}-client:latest
             ghcr.io/${{ env.IMAGE_PREFIX }}-client:${{ github.sha }}
 
+          build-args: |
+            VITE_API_URL=${{ secrets.VITE_API_URL }}
+
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -134,6 +137,9 @@ jobs:
           tags: |
             ghcr.io/${{ env.IMAGE_PREFIX }}-admin:latest
             ghcr.io/${{ env.IMAGE_PREFIX }}-admin:${{ github.sha }}
+
+          build-args: |
+            VITE_API_URL=${{ secrets.VITE_API_URL }}
 
           cache-from: type=gha
           cache-to: type=gha,mode=max
