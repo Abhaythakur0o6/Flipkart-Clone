@@ -170,6 +170,16 @@ jobs:
           echo "Backend Image:"
           echo "ghcr.io/${{ env.IMAGE_PREFIX }}-backend:${{ github.sha }}"
 
+      - name: Deploy Client to Render
+        run: |
+          curl -s "${{ secrets.RENDER_CLIENT_HOOK }}"
+          echo "Client deploy triggered"
+
+      - name: Deploy Admin to Render
+        run: |
+          curl -s "${{ secrets.RENDER_ADMIN_HOOK }}"
+          echo "Admin deploy triggered"
+
       - name: Workflow Summary
         run: |
           echo "Docker images built successfully." >> $GITHUB_STEP_SUMMARY
