@@ -69,7 +69,7 @@ module.exports.VerifyOtp = wrapAsync(async (req, res) => {
 
     await Otp.deleteMany({ userId: existingUser._id })
 
-    const token = jwt.sign({ userId: existingUser._id }, process.env.JWT_SECRET, { expiresIn: "7d" })
+    const token = jwt.sign({ userId: existingUser._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "7d" })
 
     return res.status(200).json({
         success: true, message: "Login Successfull", token, resUser: {

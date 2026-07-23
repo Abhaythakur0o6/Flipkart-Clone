@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logOutUser } from "../../redux/features/UserSlice";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
+import toast from "react-hot-toast"
 
 const Header = () => {
 
@@ -21,8 +22,13 @@ const Header = () => {
         setLoginForm(true)
     }
 
-    const logout = () => {
-        dispatch(logOutUser())
+    const logout = async() => {
+        try {
+            await dispatch(logOutUser()).unwrap()
+            toast.error("Logged Out")
+        } catch (error) {
+            toast.error("Failed to LogOut !")
+        }
     }
 
     return (

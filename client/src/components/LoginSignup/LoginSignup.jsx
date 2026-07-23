@@ -4,6 +4,7 @@ import { useDataContextProvider } from '../../context/DataProvider';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, signUpUser, VerifyOtp } from '../../redux/features/UserSlice';
 import { SendOtp } from '../../service/Api';
+import toast from "react-hot-toast"
 
 const LoginSignup = () => {
 
@@ -63,12 +64,29 @@ const LoginSignup = () => {
 
     const { user } = useSelector(state => state.user)
 
-    const loghimin = () => {
-        dispatch(loginUser(loginData))
+    const loghimin = async () => {
+        if (!loginData.email || !loginData.password) {
+            toast.error('Please fill in all fields')
+            return
+        }
+        try {
+            await dispatch(loginUser(loginData)).unwrap()
+            toast.success('Logged in successfully!')
+        } catch (error) {
+            toast.error('Login failed. Try again.')
+        }
     }
 
-    const signupHandeler = () => {
-        dispatch(signUpUser(signupData))
+    const signupHandeler = async () => {
+        if (!signupData.email || !signupData.name || !signupData.password || !signupData.phone || !signupData.username) {
+            toast.error('Please fill in all fields')
+        }
+        try {
+            await dispatch(signUpUser(signupData)).unwrap()
+            toast.success('Account created! Welcome 🎉')
+        } catch (error) {
+            toast.error(error.message || 'Login failed. Try again.')
+        }
     }
 
     useEffect(() => {
@@ -82,6 +100,10 @@ const LoginSignup = () => {
     let content;
 
     const inputRef = React.useRef([])
+
+    if (form === "otp") {
+        inputRef.current = []
+    }
 
     const handleInput = (e, index) => {
         if (e.target.value.length > 0 && index < inputRef.current.length - 1) {
@@ -107,16 +129,35 @@ const LoginSignup = () => {
     }
 
     const reqOtp = async (email) => {
-        const res = await SendOtp(email)
-        setForm("otp")
+        if (!email) {
+            toast.error("Please Enter your Email")
+            return
+        }
+        try {
+            await SendOtp(email)
+            toast.success("OTP sent to your email!")
+            setForm("otp")
+        } catch (error) {
+            toast.error("Failed to send OTP. Try again.")
+        }
     }
 
-    const checkOtp = (email) => {
-        let otp = ""
-        inputRef.current.forEach((input, index) => {
-            otp = otp + input.value
-        })
-        dispatch(VerifyOtp({ email: email, otp: otp }))
+    const checkOtp = async (email) => {
+        const otp = inputRef.current
+            .filter(input => input !== null && input !== undefined)
+            .map(input => input.value || "")
+            .join("")
+
+        if (otp.length < 6) {
+            toast.error("Please enter the complete 6-digit OTP")
+            return
+        }
+        try {
+            await dispatch(VerifyOtp({ email, otp })).unwrap()
+            toast.success('OTP Verified! Logging you in...')
+        } catch (error) {
+            toast.error(error.message || 'Invalid OTP. Please try again.')
+        }
     }
 
     if (form === "login") {

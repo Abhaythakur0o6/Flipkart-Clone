@@ -23,6 +23,7 @@
     "razorpay": "^2.9.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-hot-toast": "^2.6.0",
     "react-multi-carousel": "^2.8.6",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.9.6",

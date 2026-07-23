@@ -78,11 +78,8 @@
   .searchbar-search input {
     font-size: 0.8rem;
   }
-  .searchbar-search > :nth-child(2) {
+  .searchbar-search > :nth-child(1) {
     display: none;
-  }
-  .searchbar-search > :nth-child(3) {
-    display: block;
   }
 }
 

@@ -12,6 +12,7 @@ import ProductReview from './pages/ProductReview'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { fetchMe } from './redux/features/UserSlice'
+import { Toaster } from "react-hot-toast"
 
 const App = () => {
 
@@ -26,8 +27,18 @@ const App = () => {
   return (
     <>
       <BrowserRouter>
+
         {loading && <></>}
         {loginform && <LoginSignup />}
+
+        <Toaster
+          position='bottom-right'
+          reverseOrder={false}
+          toastOptions={{
+            duration: 3000
+          }}
+        />
+        
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/product/:id" element={<DetailPage />} />

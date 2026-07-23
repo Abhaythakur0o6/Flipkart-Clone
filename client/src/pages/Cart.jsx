@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { placeOrderApi, toPaymentGateway } from '../service/Api'
 import { useNavigate } from 'react-router-dom'
 import { addToCart, removeFromCart } from '../redux/features/CartSlice'
+import toast from "react-hot-toast"
 
 const Cart = () => {
 
@@ -47,6 +48,7 @@ const Cart = () => {
   const placeOrder = async () => {
     const isauthenticated = authenticated
     if (!isauthenticated) {
+      toast.error('Please login to place an order!')
       return
     }
     setLoading(true);
@@ -57,6 +59,7 @@ const Cart = () => {
 
   const removeCartItem = (id) => {
     dispatch(removeFromCart(id))
+     toast.error('Item removed from cart')
   }
 
 
@@ -69,7 +72,7 @@ const Cart = () => {
       }
       dispatch(addToCart({ product: product, quantity: product.quantity - 1 }))
     }
-  }
+  } 
 
   return (
     <>

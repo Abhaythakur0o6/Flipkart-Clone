@@ -9,6 +9,7 @@ import { addToCart } from '../redux/features/CartSlice'
 import { useDataContextProvider } from '../context/DataProvider'
 import { DeleteReview, placeOrderApi, toPaymentGateway } from '../service/Api'
 import { useState } from 'react'
+import toast from "react-hot-toast"
 
 const DetailPage = () => {
 
@@ -27,7 +28,7 @@ const DetailPage = () => {
 
     const { product } = useSelector(state => state.products)
 
-    const { user } = useSelector(state => state.user)
+    const { user, authenticated } = useSelector(state => state.user)
 
     const deleteReview = async () => {
         const review = await DeleteReview(id)
@@ -37,6 +38,7 @@ const DetailPage = () => {
     // CART
     const addItToCart = (product, quantity) => {
         dispatch(addToCart({ product, quantity }))
+        toast.success('Item added to cart! 🛒')
     }
 
     if (!product?._id) return;
@@ -58,6 +60,10 @@ const DetailPage = () => {
     }
 
     const buyThisProduct = async (totalPrice) => {
+        if (!authenticated) {
+            toast.error('Please login to place an order!')
+            return
+        }
         const cartItems = [product]
         const orderId = await placeOrderApi(cartItems, totalPrice)
         setLoading(true)
