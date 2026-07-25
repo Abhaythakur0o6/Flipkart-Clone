@@ -134,6 +134,8 @@
   height: 20px;
 }
 
+/* Media queries */
+
 @media (max-width: 992px) {
   .footer-top {
     flex-direction: column;
@@ -159,5 +161,11 @@
     flex-direction: column;
     gap: 10px;
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 500px) {
+  .footer-left {
+    display: none;
   }
 }

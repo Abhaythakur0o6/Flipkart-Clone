@@ -41,7 +41,6 @@ const Footer = () => {
               <a className="footer-link">FSSAI Food Safety Connect App</a>
             </div>
           </div>
-
           <div className="footer-divider"></div>
 
           <div className="footer-right">

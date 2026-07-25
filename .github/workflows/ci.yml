@@ -70,6 +70,8 @@ jobs:
 
       - name: Build Client
         working-directory: ./client
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
         run: npm run build
 
       - name: Build Admin
@@ -179,6 +181,11 @@ jobs:
         run: |
           curl -s "${{ secrets.RENDER_ADMIN_HOOK }}"
           echo "Admin deploy triggered"
+
+      - name: Deploy Backend to Render
+        run: |
+          curl -s "${{ secrets.RENDER_BACKEND_HOOK }}"
+          echo "Backend deploy triggered"
 
       - name: Workflow Summary
         run: |
