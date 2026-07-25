@@ -69,14 +69,22 @@ module.exports.VerifyOtp = wrapAsync(async (req, res) => {
 
     await Otp.deleteMany({ userId: existingUser._id })
 
-    const token = jwt.sign({ userId: existingUser._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "7d" })
+    const accessToken = jwt.sign({ _id: existingUser._id, role: existingUser.role }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "20m" })
+    const refreshToken = jwt.sign({ _id: existingUser._id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" })
+
+    res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000
+    })
 
     return res.status(200).json({
-        success: true, message: "Login Successfull", token, resUser: {
+        success: true, message: "Login Successfull", token: accessToken, resUser: {
             _id: existingUser._id,
             email: existingUser.email,
             name: existingUser.name,
             username: existingUser.username
         }
     })
-}) 
+})
