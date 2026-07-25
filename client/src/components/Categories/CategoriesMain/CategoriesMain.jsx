@@ -5,9 +5,15 @@ import { Link } from "react-router-dom"
 import { useEffect, useState } from "react"
 import axiosInstance from "../../../service/AxiosInstance"
 
-const CategoriesMain = ({products}) => {
+const CategoriesMain = ({ products }) => {
 
-    if(products.length<1) return <>...Loading</> 
+    if (products.length < 1) return <loading className="Categories-loading">
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </loading>
 
     return (
         <>
@@ -19,8 +25,8 @@ const CategoriesMain = ({products}) => {
                             <div className="product-detail">
                                 <p>{product.title.shortTitle}</p>
                                 <div className="product-price">
-                                    <p>	&#8377;{product.price.cost}</p>
-                                    <p>	&#8377;{product.price.mrp}</p>
+                                    <p>	&#8377;{product.price.cost.toLocaleString('en-IN')}</p>
+                                    <p>	&#8377;{product.price.mrp.toLocaleString('en-IN')}</p>
                                     <p>{product.price.discount} off</p>
                                 </div>
                             </div>

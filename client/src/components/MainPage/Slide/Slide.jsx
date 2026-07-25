@@ -32,7 +32,7 @@ const Slide = ({ products, title, number }) => {
                                     <img src={product.detailUrl} alt="product-image" />
                                     <div className="image-text">
                                         <p style={{ fontWeight: 600 }}>{product.title.shortTitle}</p>
-                                        <p>&#8377;{product.price.cost}</p>
+                                        <p>&#8377;{product.price.cost.toLocaleString('en-IN')}</p>
                                     </div>
                                 </div>
                             </Link>

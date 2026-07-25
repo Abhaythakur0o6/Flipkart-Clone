@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductDetail } from '../redux/features/ProductSlice';
 import { SubmitReview, SubmitReviewChanges } from '../service/Api';
 import { useDataContextProvider } from '../context/DataProvider';
+import toast from 'react-hot-toast';
 
 const ProductReview = () => {
 
@@ -14,8 +15,10 @@ const ProductReview = () => {
 
     const { reviewForm, setReviewForm } = useDataContextProvider()
 
+    const [loading, setLoading] = useState(false)
+
     const [userReview, setUserReview] = useState({
-        rating: 1,
+        rating: 5,
         title: "",
         description: ""
     })
@@ -32,17 +35,55 @@ const ProductReview = () => {
     const { product } = useSelector(state => state.products)
 
     const submitReview = async () => {
-        const review = await SubmitReview(userReview, productId)
-        navigate(`/product/${productId}`)
+        if (!userReview.title.trim()) {
+            toast.error('Please enter a review title')
+            return
+        }
+        if (!userReview.description.trim()) {
+            toast.error('Please enter a review description')
+            return
+        }
+        try {
+            setLoading(true)
+            await SubmitReview(userReview, productId)
+            toast.success('Review submitted!')
+            navigate(`/product/${productId}`)
+        } catch (error) {
+            toast.error(error.message || 'Failed to submit review')
+        } finally {
+            setLoading(false)
+        }
     }
 
     const submitReviewChanges = async () => {
-        const review = await SubmitReviewChanges(userReview, productId)
-        navigate(`/product/${productId}`)
+        if (!userReview.title.trim()) {
+            toast.error('Please enter a review title')
+            return
+        }
+        if (!userReview.description.trim()) {
+            toast.error('Please enter a review description')
+            return
+        }
+        try {
+            setLoading(true)
+            await SubmitReviewChanges(userReview, productId)
+            toast.success('Review updated!')
+            navigate(`/product/${productId}`)
+        } catch (error) {
+            toast.error(error.message || 'Failed to update review')
+        } finally {
+            setLoading(false)
+        }
     }
 
     if (!product.title) {
-        return <p>...Loading</p>
+        return (
+            <div className="d-flex justify-content-center align-items-center" style={{ height: '80vh' }}>
+                <div className="spinner-border text-primary" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        )
     }
 
     return (
@@ -107,9 +148,17 @@ const ProductReview = () => {
                             <div className="fk-form-actions">
                                 {reviewForm
                                     ?
-                                    <button className="fk-submit-btn" onClick={() => submitReviewChanges()}>Save Changes</button>
+                                    <button className="fk-submit-btn" onClick={() => submitReviewChanges()} disabled={loading}>
+                                        {loading ? <div className="spinner-border text-light spinner-border-sm" role="status">
+                                            <span className="visually-hidden">Loading...</span>
+                                        </div> : "Save Changes"}
+                                    </button>
                                     :
-                                    <button className="fk-submit-btn" onClick={() => submitReview()}>Submit</button>
+                                    <button className="fk-submit-btn" onClick={() => submitReview()} disabled={loading}>
+                                        {loading ? <div className="spinner-border text-light spinner-border-sm" role="status">
+                                            <span className="visually-hidden">Loading...</span>
+                                        </div> : "Submit"}
+                                    </button>
                                 }
                             </div>
                         </div>

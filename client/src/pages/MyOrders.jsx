@@ -41,7 +41,7 @@ const MyOrders = () => {
                                     </div>
 
                                     <div className="order-price">
-                                        ₹{order.totalPrice}
+                                        ₹{order.totalPrice.toLocaleString('en-IN')}
                                     </div>
 
                                     <div className="order-meta">

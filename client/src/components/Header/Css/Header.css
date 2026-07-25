@@ -118,6 +118,10 @@
   display: flex;
 }
 
+.become-a-seller{
+  cursor:default;
+}
+
 /* ---------------Responsive------------------ */
 
 @media (max-width: 1030px) {

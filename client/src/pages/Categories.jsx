@@ -27,7 +27,7 @@ const Categories = () => {
     }, [searchParams, dispatch]);
 
     const { categoryProducts, pagination } = useSelector(state => state.products);
-    if (!categoryProducts) return <>...Loading</>
+    if (!categoryProducts) return <></>
 
     return (
         <>

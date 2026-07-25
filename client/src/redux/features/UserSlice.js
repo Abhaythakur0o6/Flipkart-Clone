@@ -6,9 +6,13 @@ import axios from "axios"
 export const fetchMe = createAsyncThunk(
     "user/fetchMe",
     async () => {
+        // Get a fresh access token from the refresh cookie first
+        const { data: tokenData } = await axiosInstance.post("/refresh")
+        // Then fetch the user
         const { data } = await axiosInstance.get("/me")
         return {
-            user: data.resUser
+            user: data.resUser,
+            token: tokenData.token  // ✅ restore token on page refresh
         }
     }
 )
@@ -87,6 +91,7 @@ const userSlice = createSlice({
             })
             .addCase(fetchMe.fulfilled, (state, action) => {
                 state.user = action.payload.user
+                state.token = action.payload.token  // ✅ restore token in Redux
                 state.authenticated = true
                 state.loading = false
             })

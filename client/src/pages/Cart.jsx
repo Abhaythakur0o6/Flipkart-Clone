@@ -105,8 +105,8 @@ const Cart = () => {
                                 <img src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/fa_9e47c1.png" alt="assured" />
                               </div>
                               <div className="price-of-product">
-                                <span className='original-price'>{product.price.mrp}</span>
-                                <span className='discounted-price'>{product.price.cost}</span>
+                                <span className='original-price'>{product.price.mrp.toLocaleString('en-IN')}</span>
+                                <span className='discounted-price'>{product.price.cost.toLocaleString('en-IN')}</span>
                                 <span className='discount-percentage'>{product.price.discount} Off</span>
                               </div>
                               <span className='offers-applied'>2 offers applied</span>
@@ -147,11 +147,11 @@ const Cart = () => {
                         totalQuantity = totalQuantity + product.quantity
                       })}
                       <p>Price ({totalQuantity} {totalQuantity <= 1 ? "item" : "items"})</p>
-                      <p>₹{cartCalculations.totalMrp}</p>
+                      <p>₹{cartCalculations.totalMrp.toLocaleString('en-IN')}</p>
                     </div>
                     <div className="cart-price-calculation">
                       <p>Discount</p>
-                      <p className='cart-green'>- ₹{cartCalculations.totalDiscount}</p>
+                      <p className='cart-green'>- ₹{cartCalculations.totalDiscount.toLocaleString('en-IN')}</p>
                     </div>
                     <div className="cart-price-calculation">
                       <p>Delivery Charges</p>
@@ -160,10 +160,10 @@ const Cart = () => {
                   </div>
                   <div className="total-amount-calculated cart-price-calculation">
                     <p>Total Amount</p>
-                    <p>₹{cartCalculations.totalCost}</p>
+                    <p>₹{cartCalculations.totalCost.toLocaleString('en-IN')}</p>
                   </div>
                   <div className="saving-by-customer cart-green">
-                    <p>You will save ₹{cartCalculations.totalDiscount} on this order</p>
+                    <p>You will save ₹{cartCalculations.totalDiscount.toLocaleString('en-IN')} on this order</p>
                   </div>
                   <div className="safe-payment">
                     <div className="icon-shield">

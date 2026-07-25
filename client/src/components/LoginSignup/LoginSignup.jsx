@@ -30,6 +30,9 @@ const LoginSignup = () => {
         phone: ""
     })
 
+    const [loading, setLoading] = useState(false);
+    const [otpLoading, setOtpLoading] = useState(false);
+
     const onInputChange = (e) => {
         const newData = { ...signupData, [e.target.name]: e.target.value };
         setSignupData(newData);
@@ -70,10 +73,13 @@ const LoginSignup = () => {
             return
         }
         try {
+            setLoading(true);
             await dispatch(loginUser(loginData)).unwrap()
             toast.success('Logged in successfully!')
+            setLoading(false);
         } catch (error) {
             toast.error('Login failed. Try again.')
+            setLoading(false);
         }
     }
 
@@ -82,10 +88,13 @@ const LoginSignup = () => {
             toast.error('Please fill in all fields')
         }
         try {
+            setLoading(true);
             await dispatch(signUpUser(signupData)).unwrap()
             toast.success('Account created! Welcome 🎉')
+            setLoading(false);
         } catch (error) {
-            toast.error(error.message || 'Login failed. Try again.')
+            toast.error('Login failed. Try again.')
+            setLoading(false);
         }
     }
 
@@ -134,15 +143,19 @@ const LoginSignup = () => {
             return
         }
         try {
+            setOtpLoading(true);
             await SendOtp(email)
             toast.success("OTP sent to your email!")
+            setOtpLoading(false)
             setForm("otp")
         } catch (error) {
             toast.error("Failed to send OTP. Try again.")
+            setOtpLoading(false);
         }
     }
 
     const checkOtp = async (email) => {
+        setLoading(true);
         const otp = inputRef.current
             .filter(input => input !== null && input !== undefined)
             .map(input => input.value || "")
@@ -150,13 +163,16 @@ const LoginSignup = () => {
 
         if (otp.length < 6) {
             toast.error("Please enter the complete 6-digit OTP")
+            setLoading(false)
             return
         }
         try {
             await dispatch(VerifyOtp({ email, otp })).unwrap()
             toast.success('OTP Verified! Logging you in...')
+            setLoading(false);
         } catch (error) {
-            toast.error(error.message || 'Invalid OTP. Please try again.')
+            toast.error('Invalid OTP. Please try again.')
+            setLoading(false);
         }
     }
 
@@ -166,9 +182,17 @@ const LoginSignup = () => {
                 <input value={loginData.email} onChange={onloginInputChange} type="email" placeholder='Enter Email' name='email' />
                 <input value={loginData.password} onChange={onloginInputChange} type="password" placeholder='Enter Password' name='password' />
                 <p>By continuing, you agree to Flipkart's Terms of Use and Privacy Policy.</p>
-                <button onClick={loghimin} className='login-button'>Login</button>
+                <button onClick={loghimin} className='login-button'>{loading ? <div className="d-flex justify-content-center">
+                    <div className="spinner-border" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                </div> : "Login"}</button>
                 <h6>OR</h6>
-                <button className='otp-button' onClick={() => reqOtp(loginData.email)}>Request OTP</button>
+                <button className='otp-button' onClick={() => reqOtp(loginData.email)}>{otpLoading ? <div class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div> : "Request OTP"}</button>
             </div>
             <div className="input-text">
                 <p onClick={changeForm}>New to FlipKart ? Create a account</p>
@@ -182,7 +206,11 @@ const LoginSignup = () => {
                 <input value={signupData.username} type="text" onChange={onInputChange} placeholder='Enter Username' name='username' />
                 <input value={signupData.password} type="password" onChange={onInputChange} placeholder='Enter Password' name='password' />
                 <input value={signupData.phone} type="tel" onChange={onInputChange} placeholder='Enter Phone' name='phone' />
-                <button type="button" onClick={signupHandeler}>Continue</button>
+                <button type="button" onClick={signupHandeler}> {loading ? <div class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div> : "Continue"}</button>
             </div>
             <div className="input-text">
                 <p onClick={changeForm}>Already have account ? Log in</p>
@@ -197,7 +225,11 @@ const LoginSignup = () => {
                         <input onKeyDown={(e) => handleKeyDown(e, index)} type="text" onChange={(e) => handleInput(e, index)} maxLength={1} key={index} required ref={e => inputRef.current[index] = e} />
                     ))}
                 </div>
-                <button className='otp-submit-button' onClick={() => checkOtp(loginData.email)}>Verify</button>
+                <button className='otp-submit-button' onClick={() => checkOtp(loginData.email)}>{loading ? <div class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div> : "Verify"}</button>
                 <p className="resend-otp">Didn't receive the code? <span>Resend</span></p>
             </div>
         </div>

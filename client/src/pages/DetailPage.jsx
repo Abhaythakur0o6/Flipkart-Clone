@@ -26,7 +26,7 @@ const DetailPage = () => {
         dispatch(fetchProductDetail(id))
     }, [id, dispatch])
 
-    const { product } = useSelector(state => state.products)
+    const { product, loadingProduct } = useSelector(state => state.products)
 
     const { user, authenticated } = useSelector(state => state.user)
 
@@ -41,7 +41,15 @@ const DetailPage = () => {
         toast.success('Item added to cart! 🛒')
     }
 
-    if (!product?._id) return;
+    if (loadingProduct) return (
+        <div className="d-flex justify-content-center align-items-center" style={{ height: '80vh' }}>
+            <div className="spinner-border text-dark" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    )
+
+    if (!product?._id) return null;
 
     const ratingCounts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
     if (product.reviews) {
@@ -70,6 +78,8 @@ const DetailPage = () => {
         const travelLink = await toPaymentGateway(orderId)
         window.location.href = travelLink;
     }
+
+
 
     return (
         <>
@@ -104,8 +114,8 @@ const DetailPage = () => {
                         <div className="special-price">
                             <p style={{ fontWeight: 600, fontSize: "14px", color: 'green' }}>Special price</p>
                             <div className="product-price">
-                                <p className="price-cost">₹{product.price.cost}</p>
-                                <p className="price-mrp">₹{product.price.mrp}</p>
+                                <p className="price-cost">₹{product.price.cost.toLocaleString('en-IN')}</p>
+                                <p className="price-mrp">₹{product.price.mrp.toLocaleString('en-IN')}</p>
                                 <p className="price-discount">{product.price.discount} off</p>
                             </div>
                         </div>

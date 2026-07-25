@@ -20,7 +20,13 @@ const OrderDetail = () => {
     }, [id])
 
     if (!order) {
-        return <><p>Loading....</p></>
+        return (
+            <div className="d-flex justify-content-center align-items-center" style={{ height: '80vh' }}>
+                <div className="spinner-border text-primary" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        )
     }
 
     return (
@@ -63,14 +69,16 @@ const OrderDetail = () => {
                                     <div className="item-details">
                                         <p className="item-name">{item.productName}</p>
                                         <p className="item-qty">Qty: {item.quantity}</p>
-                                        <p className="item-price">₹{item.price}</p>
+                                        <p className="item-price">₹{item.price.toLocaleString('en-IN')}</p>
                                     </div>
 
                                     <div className="item-total">
-                                        ₹{item.price * item.quantity}
-                                        <Link to={`/product/review/${item.productId}` } style={{all:"unset"}}>
-                                            <p>Review</p>
-                                        </Link>
+                                        ₹{(item.price * item.quantity).toLocaleString('en-IN')}
+                                        {order.paymentDetails.status.toLowerCase() !== 'pending' && (
+                                            <Link to={`/product/review/${item.productId}`} style={{ all: "unset" }}>
+                                                <p>Review</p>
+                                            </Link>
+                                        )}
                                     </div>
                                 </div>
                             ))}
@@ -91,7 +99,7 @@ const OrderDetail = () => {
 
                         <div className="price-row">
                             <p>Items Price</p>
-                            <p>₹{order.totalPrice}</p>
+                            <p>₹{order.totalPrice.toLocaleString('en-IN')}</p>
                         </div>
 
                         <div className="price-row">
@@ -101,7 +109,7 @@ const OrderDetail = () => {
 
                         <div className="price-row total">
                             <p>Total Amount</p>
-                            <p>₹{order.totalPrice}</p>
+                            <p>₹{order.totalPrice.toLocaleString('en-IN')}</p>
                         </div>
                     </div>
 
