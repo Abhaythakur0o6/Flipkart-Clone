@@ -54,9 +54,9 @@ const MainPage = () => {
             <div className="main-page-container">
                 <Navbar />
                 <Carousel />
-                <MidSlide products={products.filter(p => p.category === "Top Deals")} title={"Top Deals"} />
+                <MidSlide products={products.filter(p => p.category === "Top Deals").length ? products.filter(p => p.category === "Top Deals") : products} title={"Top Deals"} />
                 <MidSection products={products} title={boxTitleOne} img={midSectionImage.first} />
-                <Slide products={products.filter(p => p.category === "Fashion Deals")} title={"Fashion Deals"} number={6} />
+                <Slide products={products.filter(p => p.category === "Fashion Deals").length ? products.filter(p => p.category === "Fashion Deals") : products} title={"Fashion Deals"} number={6} />
                 <MidSection products={products} title={boxTitleTwo} img={midSectionImage.second} />
                 <TopStories />
             </div>

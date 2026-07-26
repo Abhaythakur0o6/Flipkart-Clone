@@ -9,9 +9,15 @@ const wrapAsync = require("../utils/wrapAsync");
 module.exports.SendOtp = wrapAsync(async (req, res) => {
     const { email } = req.body;
 
-    const existingUser = await User.findOne({ email })
+    if (!email) {
+        return res.status(400).json({ success: false, message: "Email is required" });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+
+    const existingUser = await User.findOne({ email: normalizedEmail })
     if (!existingUser) {
-        return res.status(404).json({ success: false, message: "user does not exist" })
+        return res.status(404).json({ success: false, message: "User does not exist. Please sign up first." })
     }
 
     await Otp.deleteMany({ userId: existingUser._id })
@@ -29,12 +35,17 @@ module.exports.SendOtp = wrapAsync(async (req, res) => {
         expiresAt: Date.now() + 5 * 60 * 1000
     })
 
-    await transporter.sendMail({
-        from: process.env.SENDER_EMAIL,
-        to: email,
-        subject: "Flipkart - Login OTP",
-        html: `<h2>Your OTP is ${otp}</h2><p>Valid for 5 minutes</p>`
-    })
+    try {
+        await transporter.sendMail({
+            from: process.env.SENDER_EMAIL || normalizedEmail,
+            to: normalizedEmail,
+            subject: "Flipkart - Login OTP",
+            html: `<h2>Your OTP is ${otp}</h2><p>Valid for 5 minutes</p>`
+        })
+    } catch (err) {
+        console.error("Nodemailer sendMail Error:", err);
+        return res.status(500).json({ success: false, message: err.message || "Failed to send OTP email." });
+    }
 
     return res.status(200).json({ success: true, message: "OTP sent successfully" })
 })
@@ -43,10 +54,16 @@ module.exports.SendOtp = wrapAsync(async (req, res) => {
 //Verify OTP
 module.exports.VerifyOtp = wrapAsync(async (req, res) => {
     const { email, otp } = req.body
-    const existingUser = await User.findOne({ email })
+
+    if (!email || !otp) {
+        return res.status(400).json({ success: false, message: "Email and OTP are required" });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+    const existingUser = await User.findOne({ email: normalizedEmail })
 
     if (!existingUser) {
-        return res.status(404).json({ success: false, message: "User does not exists" })
+        return res.status(404).json({ success: false, message: "User does not exist" })
     }
 
     const otpRecord = await Otp.findOne({
