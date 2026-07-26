@@ -1,6 +1,5 @@
-const transporter = require("../config/nodeMailer");
 const Otp = require("../models/otp");
-const crypto = require("crypto")
+const crypto = require("crypto");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const wrapAsync = require("../utils/wrapAsync");
@@ -15,40 +14,55 @@ module.exports.SendOtp = wrapAsync(async (req, res) => {
 
     const normalizedEmail = email.toLowerCase().trim();
 
-    const existingUser = await User.findOne({ email: normalizedEmail })
+    const existingUser = await User.findOne({ email: normalizedEmail });
     if (!existingUser) {
-        return res.status(404).json({ success: false, message: "User does not exist. Please sign up first." })
+        return res.status(404).json({ success: false, message: "User does not exist. Please sign up first." });
     }
 
-    await Otp.deleteMany({ userId: existingUser._id })
+    await Otp.deleteMany({ userId: existingUser._id });
 
     const otp = crypto.randomInt(100000, 999999).toString();
 
     const otpHash = crypto
         .createHash("sha256")
         .update(otp)
-        .digest("hex")
+        .digest("hex");
 
     await Otp.create({
         userId: existingUser._id,
         otpHash,
         expiresAt: Date.now() + 5 * 60 * 1000
-    })
+    });
 
     try {
-        await transporter.sendMail({
-            from: process.env.SENDER_EMAIL || normalizedEmail,
-            to: normalizedEmail,
-            subject: "Flipkart - Login OTP",
-            html: `<h2>Your OTP is ${otp}</h2><p>Valid for 5 minutes</p>`
-        })
+        const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+            method: "POST",
+            headers: {
+                "api-key": process.env.BREVO_API_KEY || process.env.SMTP_PASS,
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                sender: { email: process.env.SENDER_EMAIL || normalizedEmail, name: "Flipkart Clone" },
+                to: [{ email: normalizedEmail }],
+                subject: "Flipkart - Login OTP",
+                htmlContent: `<h2>Your OTP is ${otp}</h2><p>Valid for 5 minutes</p>`
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error("Brevo API error response:", data);
+            return res.status(500).json({ success: false, message: data.message || "Failed to send email." });
+        }
     } catch (err) {
-        console.error("Nodemailer sendMail Error:", err);
-        return res.status(500).json({ success: false, message: err.message || "Failed to send OTP email." });
+        console.error("Error connecting to Brevo API:", err);
+        return res.status(500).json({ success: false, message: "Email service connection error." });
     }
 
-    return res.status(200).json({ success: true, message: "OTP sent successfully" })
-})
+    return res.status(200).json({ success: true, message: "OTP sent successfully" });
+});
 
 
 //Verify OTP
