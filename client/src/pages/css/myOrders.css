@@ -138,7 +138,7 @@
 /* Responsive */
 
 @media (max-width: 770px) {
-  .order-status{
-    display: none;
+  .my-orders .order-status {
+    display: none !important;
   }
 }

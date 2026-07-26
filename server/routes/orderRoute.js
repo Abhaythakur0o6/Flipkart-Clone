@@ -1,6 +1,6 @@
 const express = require("express")
 const router = express.Router();
-const { order, Allorders, CustomerOrders, SingleOrder } = require("../controllers/order-controller.js");
+const { order, Allorders, CustomerOrders, SingleOrder, updateOrderStatus } = require("../controllers/order-controller.js");
 const auth = require("../middlewares/auth.js");
 
 //New Order
@@ -14,5 +14,8 @@ router.get("/singleOrder/:id", auth, SingleOrder)
 
 //Customer Order
 router.get("/customerorders", auth, CustomerOrders)
+
+//Update Order Status (Admin)
+router.patch("/order/:id/status", updateOrderStatus)
 
 module.exports = router

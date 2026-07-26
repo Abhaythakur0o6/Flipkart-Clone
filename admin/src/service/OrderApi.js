@@ -31,3 +31,9 @@ export const DeleteProduct = async (id) => {
     const res = await axios.delete(`${URL}/deleteproduct/${id}`)
     return res.data.product
 }
+
+//For Updating Order Status
+export const UpdateOrderStatus = async (orderId, status) => {
+    const res = await axios.patch(`${URL}/order/${orderId}/status`, { status })
+    return res.data;
+}

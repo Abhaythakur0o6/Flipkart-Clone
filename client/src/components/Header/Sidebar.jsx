@@ -1,9 +1,19 @@
 import { useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
+import toast from "react-hot-toast"
 
 const Sidebar = ({ setSidebar, sidebar, logout, toggleForm }) => {
     const navigate = useNavigate()
     const { user } = useSelector(state => state.user)
+
+    const handleOrdersClick = () => {
+        if (!user?._id) {
+            toast.error("Please login first to view your orders! 🔒")
+            return
+        }
+        navigate("/my-orders")
+    }
+
     return (
         <>
             <div className="mainpage-sidebar">
@@ -28,9 +38,9 @@ const Sidebar = ({ setSidebar, sidebar, logout, toggleForm }) => {
                         <p>Cart</p>
                     </div>
 
-                    <Link to={"/my-orders"} style={{ all: "unset" }}>
-                        <li className="mainpage-sidebar-dropdown-item"><img src="https://static-assets-web.flixcart.com/batman-returns/batman-returns/p/images/orders-bfe8c4.svg" alt="" /> Orders</li>
-                    </Link>
+                    <li className="mainpage-sidebar-dropdown-item" onClick={handleOrdersClick} style={{ cursor: "pointer" }}>
+                        <img src="https://static-assets-web.flixcart.com/batman-returns/batman-returns/p/images/orders-bfe8c4.svg" alt="" /> Orders
+                    </li>
                 </div>
             </div>
         </>
