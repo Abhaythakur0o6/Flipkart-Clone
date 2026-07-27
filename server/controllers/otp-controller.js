@@ -74,10 +74,8 @@ module.exports.SendOtp = wrapAsync(async (req, res) => {
 
     try {
         if (apiKey) {
-            // Production (Docker on Render): Uses Brevo HTTPS API with xkeysib API key
             await sendBrevoHttpEmail(apiKey, senderEmail, normalizedEmail, otp);
         } else {
-            // Localhost: Uses Nodemailer SMTP
             await transporter.sendMail({
                 from: senderEmail,
                 to: normalizedEmail,

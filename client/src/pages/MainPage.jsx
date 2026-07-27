@@ -48,6 +48,14 @@ const MainPage = () => {
 
     const { products = [] } = useSelector(state => state.products)
 
+    if (products.length < 1) return (
+        <div className="d-flex justify-content-center align-items-center" style={{ height: '80vh' }}>
+            <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    )
+
     return (
         <div className="main-page">
             <Header />
