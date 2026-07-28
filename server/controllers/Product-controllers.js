@@ -133,18 +133,18 @@ module.exports.ProdcutReview = wrapAsync(async (req, res) => {
         name: user.name,
         title,
         description,
-        rating
+        rating: Number(rating)
     }
     product.reviews.push(review)
 
     product.numOfReviews = product.reviews.length
 
-    product.averageRating =
-        product.reviews.reduce((acc, item) => acc + item.rating, 0) /
-        product.reviews.length
+    const totalRating = product.reviews.reduce((acc, item) => acc + Number(item.rating), 0)
+    product.averageRating = product.reviews.length
+        ? Number((totalRating / product.reviews.length).toFixed(1))
+        : 0
 
     await product.save()
-
 
     return res.status(201).json({
         success: true,
@@ -166,7 +166,7 @@ module.exports.EditReview = wrapAsync(async (req, res) => {
         })
     }
 
-    const existingReview = existingProduct.reviews.find(review => review.user.toString() === userId)
+    const existingReview = existingProduct.reviews.find(review => review.user.toString() === userId.toString())
     if (!existingReview) {
         return res.status(404).json({
             success: false,
@@ -176,11 +176,12 @@ module.exports.EditReview = wrapAsync(async (req, res) => {
 
     existingReview.title = title
     existingReview.description = description
-    existingReview.rating = rating
+    existingReview.rating = Number(rating)
 
+    existingProduct.numOfReviews = existingProduct.reviews.length
+    const totalRating = existingProduct.reviews.reduce((acc, r) => acc + Number(r.rating), 0)
     existingProduct.averageRating = existingProduct.reviews.length
-        ? existingProduct.reviews.reduce((acc, r) => acc + r.rating, 0) /
-        existingProduct.reviews.length
+        ? Number((totalRating / existingProduct.reviews.length).toFixed(1))
         : 0
 
     await existingProduct.save()
@@ -201,18 +202,19 @@ module.exports.DeleteReview = wrapAsync(async (req, res) => {
         return res.status(404).json({ message: "product not found", success: false })
     }
 
-    const review = product.reviews.find(review => review.user.toString() === userId)
+    const review = product.reviews.find(review => review.user.toString() === userId.toString())
     if (!review) {
         return res.status(404).json({ message: "Review not found", success: false })
     }
 
-    const reviews = product.reviews.filter(rev => rev.user.toString() !== review.user.toString())
+    const reviews = product.reviews.filter(rev => rev.user.toString() !== userId.toString())
 
     product.reviews = reviews
+    product.numOfReviews = reviews.length
 
-    product.averageRating = product.reviews.length
-        ? product.reviews.reduce((acc, r) => acc + r.rating, 0) /
-        product.reviews.length
+    const totalRating = reviews.reduce((acc, r) => acc + Number(r.rating), 0)
+    product.averageRating = reviews.length
+        ? Number((totalRating / reviews.length).toFixed(1))
         : 0
 
     await product.save()

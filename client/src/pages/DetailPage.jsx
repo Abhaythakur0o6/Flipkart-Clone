@@ -31,8 +31,13 @@ const DetailPage = () => {
     const { user, authenticated } = useSelector(state => state.user)
 
     const deleteReview = async () => {
-        const review = await DeleteReview(id)
-        dispatch(fetchProductDetail(id))
+        try {
+            await DeleteReview(id)
+            toast.success("Review deleted successfully!")
+            dispatch(fetchProductDetail(id))
+        } catch (err) {
+            toast.error(err.response?.data?.message || "Failed to delete review")
+        }
     }
 
     // CART
@@ -182,7 +187,7 @@ const DetailPage = () => {
                                                 <p>{review.rating} <i className="fa-solid fa-star fa-2xs"></i></p>
                                                 <p>{review.title} </p>
                                             </div>
-                                            {review.user === user?._id
+                                            {review.user?.toString() === user?._id?.toString()
                                                 ?
                                                 <div className="rating-edit">
                                                     <p onClick={() => editReview()}>Edit</p>
