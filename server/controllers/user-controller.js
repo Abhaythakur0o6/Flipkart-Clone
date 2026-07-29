@@ -23,20 +23,41 @@ const createRefreshToken = (user) => {
 
 //Get Me Controller
 module.exports.getMe = wrapAsync(async (req, res) => {
-    const refreshToken = req.cookies.refreshToken
-    if (!refreshToken) {
-        return res.status(401).json({ message: "Not authenticated" })
+    let userId = req.user?._id
+
+    if (!userId) {
+        const authHeader = req.headers.authorization;
+        if (authHeader && authHeader.startsWith("Bearer ")) {
+            const token = authHeader.split(" ")[1];
+            try {
+                const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+                userId = decoded._id;
+            } catch (tokenErr) {
+                userId = null;
+            }
+        }
     }
 
-    const decoded = jwt.verify(
-        refreshToken,
-        process.env.REFRESH_TOKEN_SECRET
-    )
+    if (!userId) {
+        const refreshToken = req.cookies?.refreshToken;
+        if (refreshToken) {
+            try {
+                const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+                userId = decoded._id;
+            } catch (refreshErr) {
+                userId = null;
+            }
+        }
+    }
 
-    const user = await User.findById(decoded._id)
+    if (!userId) {
+        return res.status(401).json({ message: "Not authenticated", success: false })
+    }
+
+    const user = await User.findById(userId)
 
     if (!user) {
-        return res.status(404).json({ message: "User not found" })
+        return res.status(404).json({ message: "User not found", success: false })
     }
 
     res.status(200).json({

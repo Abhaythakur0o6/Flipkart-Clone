@@ -14,7 +14,7 @@ const axiosInstance = axios.create({
 
 // Attach access token
 axiosInstance.interceptors.request.use((config) => {
-    const token = reduxStore?.getState()?.user?.token
+    const token = reduxStore?.getState()?.user?.token || localStorage.getItem("flipkart_token")
     if (token) {
         config.headers.Authorization = `Bearer ${token}`
     }
@@ -27,18 +27,22 @@ axiosInstance.interceptors.response.use(
     async (err) => {
         const originalRequest = err.config
 
-        if (err.response?.status === 401 && !originalRequest._retry && !originalRequest.url.includes("/refresh")) {
+        if (err.response?.status === 401 && !originalRequest._retry && !originalRequest.url?.includes("/refresh")) {
             originalRequest._retry = true
             try {
                 const res = await axiosInstance.post("/refresh")
 
-                reduxStore.dispatch(updateToken(res.data.token))
+                if (res.data?.token) {
+                    localStorage.setItem("flipkart_token", res.data.token)
+                    reduxStore.dispatch(updateToken(res.data.token))
 
-                originalRequest.headers.Authorization =
-                    `Bearer ${res.data.token}`
+                    originalRequest.headers.Authorization =
+                        `Bearer ${res.data.token}`
 
-                return axiosInstance(originalRequest)
+                    return axiosInstance(originalRequest)
+                }
             } catch {
+                localStorage.removeItem("flipkart_token")
                 reduxStore.dispatch(logOutUser())
             }
         }

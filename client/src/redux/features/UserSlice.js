@@ -5,14 +5,33 @@ import axios from "axios"
 //Fetch User
 export const fetchMe = createAsyncThunk(
     "user/fetchMe",
-    async () => {
-        // Get a fresh access token from the refresh cookie first
-        const { data: tokenData } = await axiosInstance.post("/refresh")
-        // Then fetch the user
-        const { data } = await axiosInstance.get("/me")
-        return {
-            user: data.resUser,
-            token: tokenData.token  // ✅ restore token on page refresh
+    async (_, { rejectWithValue }) => {
+        try {
+            // 1. Try fetching /me using stored token
+            const { data } = await axiosInstance.get("/me")
+            const currentToken = localStorage.getItem("flipkart_token")
+            return {
+                user: data.resUser,
+                token: currentToken
+            }
+        } catch {
+            // 2. Fallback to /refresh cookie
+            try {
+                const { data: tokenData } = await axiosInstance.post("/refresh")
+                if (tokenData?.token) {
+                    localStorage.setItem("flipkart_token", tokenData.token)
+                    const { data } = await axiosInstance.get("/me")
+                    return {
+                        user: data.resUser,
+                        token: tokenData.token
+                    }
+                }
+            } catch (refreshErr) {
+                localStorage.removeItem("flipkart_token")
+                return rejectWithValue(refreshErr.response?.data?.message || "Session expired")
+            }
+            localStorage.removeItem("flipkart_token")
+            return rejectWithValue("Session expired")
         }
     }
 )
@@ -66,12 +85,14 @@ export const VerifyOtp = createAsyncThunk(
 
 // Slice ------------------------------->
 
+const savedToken = typeof window !== "undefined" ? localStorage.getItem("flipkart_token") : null;
+
 const userSlice = createSlice({
     name: "user",
     initialState: {
         user: null,
-        token: null,
-        authenticated: false,
+        token: savedToken || null,
+        authenticated: !!savedToken,
         error: null,
         loading: false,
         message: null
@@ -80,6 +101,9 @@ const userSlice = createSlice({
         updateToken(state, action) {
             state.token = action.payload
             state.authenticated = true
+            if (action.payload) {
+                localStorage.setItem("flipkart_token", action.payload)
+            }
         }
     },
     extraReducers: (builder) => {
@@ -91,12 +115,16 @@ const userSlice = createSlice({
             })
             .addCase(fetchMe.fulfilled, (state, action) => {
                 state.user = action.payload.user
-                state.token = action.payload.token  // ✅ restore token in Redux
+                state.token = action.payload.token
                 state.authenticated = true
                 state.loading = false
             })
             .addCase(fetchMe.rejected, (state) => {
+                state.user = null
+                state.token = null
+                state.authenticated = false
                 state.loading = false
+                localStorage.removeItem("flipkart_token")
             })
 
             //Login
@@ -107,6 +135,9 @@ const userSlice = createSlice({
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.user = action.payload.user
                 state.token = action.payload.token
+                if (action.payload.token) {
+                    localStorage.setItem("flipkart_token", action.payload.token)
+                }
                 state.loading = false;
                 state.authenticated = true
             })
@@ -123,6 +154,9 @@ const userSlice = createSlice({
             .addCase(signUpUser.fulfilled, (state, action) => {
                 state.user = action.payload.user
                 state.token = action.payload.token
+                if (action.payload.token) {
+                    localStorage.setItem("flipkart_token", action.payload.token)
+                }
                 state.authenticated = true
                 state.loading = false;
             })
@@ -141,15 +175,20 @@ const userSlice = createSlice({
                 state.token = null;
                 state.loading = false;
                 state.message = action.payload;
+                localStorage.removeItem("flipkart_token")
             })
             .addCase(logOutUser.rejected, (state) => {
                 state.loading = false;
+                localStorage.removeItem("flipkart_token")
             })
 
             //Verify OTP
             .addCase(VerifyOtp.fulfilled, (state, action) => {
                 state.user = action.payload.user
                 state.token = action.payload.token
+                if (action.payload.token) {
+                    localStorage.setItem("flipkart_token", action.payload.token)
+                }
                 state.loading = false;
                 state.authenticated = true
             })
