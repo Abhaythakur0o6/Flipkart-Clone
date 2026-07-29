@@ -7,7 +7,6 @@ export const fetchMe = createAsyncThunk(
     "user/fetchMe",
     async (_, { rejectWithValue }) => {
         try {
-            // 1. Try fetching /me using stored token
             const { data } = await axiosInstance.get("/me")
             const currentToken = localStorage.getItem("flipkart_token")
             return {
@@ -15,7 +14,6 @@ export const fetchMe = createAsyncThunk(
                 token: currentToken
             }
         } catch {
-            // 2. Fallback to /refresh cookie
             try {
                 const { data: tokenData } = await axiosInstance.post("/refresh")
                 if (tokenData?.token) {

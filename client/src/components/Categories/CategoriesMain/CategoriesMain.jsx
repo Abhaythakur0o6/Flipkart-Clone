@@ -1,25 +1,29 @@
-import { useDispatch, useSelector } from "react-redux"
-import { fetchProducts } from "../../../redux/features/ProductSlice"
 import "./CategoriesMain.css"
 import { Link } from "react-router-dom"
-import { useEffect, useState } from "react"
-import axiosInstance from "../../../service/AxiosInstance"
 
-const CategoriesMain = ({ products }) => {
+const CategoriesMain = ({ products, loading }) => {
 
-    if (products.length < 1) return <loading className="Categories-loading">
-        <div class="d-flex justify-content-center">
-            <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
+    if (loading) return (
+        <div className="Categories-loading">
+            <div className="d-flex justify-content-center">
+                <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
             </div>
         </div>
-    </loading>
+    )
+
+    if (!products || products.length < 1) return (
+        <div style={{ textAlign: "center", padding: "40px", fontSize: "18px", color: "#666" }}>
+            No products found
+        </div>
+    )
 
     return (
         <>
             <div className="category-products">
                 {products.map((product) => (
-                    <Link to={`/product/${product._id}`} style={{ all: "unset" }}>
+                    <Link key={product._id} to={`/product/${product._id}`} style={{ all: "unset" }}>
                         <div className="category-product">
                             <img src={product.detailUrl} alt="product-img" />
                             <div className="product-detail">

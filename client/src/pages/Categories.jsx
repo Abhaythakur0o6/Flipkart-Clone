@@ -26,8 +26,7 @@ const Categories = () => {
         dispatch(fetchCategoryProducts(queryString))
     }, [searchParams, dispatch]);
 
-    const { categoryProducts, pagination } = useSelector(state => state.products);
-    if (!categoryProducts) return <></>
+    const { categoryProducts, loadingProducts, pagination } = useSelector(state => state.products);
 
     return (
         <>
@@ -36,7 +35,7 @@ const Categories = () => {
                 <div className="categories">
                     <CategoriesSidebar />
                     <div className="all-category-products">
-                        <CategoriesMain products={categoryProducts} />
+                        <CategoriesMain products={categoryProducts || []} loading={loadingProducts} />
                         <div className="categories-page-box">
                             <img src="https://cdn-icons-png.flaticon.com/128/271/271220.png" alt="prev"
                                 onClick={() => {

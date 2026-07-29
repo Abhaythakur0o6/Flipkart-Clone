@@ -73,13 +73,20 @@ const productSlice = createSlice({
                 state.error = action.error.message;
             })
 
-            //Category Products 
+            .addCase(fetchCategoryProducts.pending, (state) => {
+                state.loadingProducts = true;
+                state.error = null;
+            })
             .addCase(fetchCategoryProducts.fulfilled,
                 (state, action) => {
                     state.loadingProducts = false;
                     state.categoryProducts = action.payload.allProducts;
                     state.pagination = action.payload.pagination;
                 })
+            .addCase(fetchCategoryProducts.rejected, (state, action) => {
+                state.loadingProducts = false;
+                state.error = action.error.message;
+            })
     }
 });
 
