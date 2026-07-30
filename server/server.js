@@ -9,7 +9,6 @@ const paymentRouter = require("./routes/paymentRoute")
 const orderRouter = require("./routes/orderRoute")
 const userRouter = require("./routes/userRoute")
 const OtpRouter = require("./routes/otpRoutes");
-const defaultData = require("./default");
 
 const PORT = process.env.PORT || 5000
 

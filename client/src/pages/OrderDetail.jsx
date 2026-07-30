@@ -74,7 +74,7 @@ const OrderDetail = () => {
 
                                     <div className="item-total">
                                         ₹{(item.price * item.quantity).toLocaleString('en-IN')}
-                                        {order.paymentDetails.status.toLowerCase() !== 'pending' && (
+                                        {order.status?.toLowerCase() === 'delivered' && (
                                             <Link to={`/product/review/${item.productId}`} style={{ all: "unset" }}>
                                                 <p>Review</p>
                                             </Link>
