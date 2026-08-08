@@ -25,7 +25,7 @@
 
 <br/>
 
-> **Hosted on Render free tier** — may take ~30 seconds to wake up on first visit.
+> **Hosted on Render free tier** — may take ~30 seconds to wake up on first visit.<br>
 > 🔒 **Admin Panel** URL is kept private — [contact the author](#-author) to request access.
 
 <br/>
